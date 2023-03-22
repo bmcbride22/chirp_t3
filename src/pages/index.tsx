@@ -9,11 +9,15 @@ dayjs.extend(relativeTime)
 import { api, type RouterOutputs } from '~/utils/api'
 import Image from 'next/image'
 import { LoadingPage } from '~/components/LoadingSpinner'
+import { useState } from 'react'
 
 // Keep things in one file until you are sure you need them elsewhere
 
 const CreatePostWizard = () => {
   const { user } = useUser()
+  const { mutate } = api.posts.create.useMutation()
+  const [input, setInput] = useState<string>('')
+
   if (!user) return null
 
   return (
@@ -29,7 +33,10 @@ const CreatePostWizard = () => {
         placeholder='Type some emojis'
         type='text'
         className='grow bg-transparent outline-none'
+        value={input}
+        onChange={e => setInput(e.target.value)}
       />
+      <button onClick={() => mutate({ content: input })}>Post</button>
     </div>
   )
 }
@@ -53,7 +60,7 @@ const PostView = (props: PostWithUser) => {
           <span className='px-1'> · </span>
           <span>`@{dayjs(post.createdAt).fromNow()}`</span>
         </div>
-        <span>{post.content}</span>
+        <span className='text-2xl'>{post.content}</span>
       </div>
     </div>
   )
