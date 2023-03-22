@@ -8,6 +8,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import { api, type RouterOutputs } from '~/utils/api'
 import Image from 'next/image'
+import { LoadingPage } from '~/components/LoadingSpinner'
 
 // Keep things in one file until you are sure you need them elsewhere
 
@@ -58,11 +59,28 @@ const PostView = (props: PostWithUser) => {
   )
 }
 
-const Home: NextPage = () => {
-  const user = useUser()
-  const { data, isLoading } = api.posts.getAll.useQuery()
+const Feed = () => {
+  const { data, isLoading: postsLoading } = api.posts.getAll.useQuery()
 
-  // if (isLoading) return <div>Loading...</div>
+  if (postsLoading) return <LoadingPage />
+
+  return (
+    <div className='flex flex-col space-y-2'>
+      {data?.map(fullPost => (
+        <PostView {...fullPost} key={fullPost.post.id} />
+      ))}
+    </div>
+  )
+}
+
+const Home: NextPage = () => {
+  const { isLoaded: userLoaded, isSignedIn } = useUser()
+
+  // start fetch early to use cached data later in the feed
+  api.posts.getAll.useQuery()
+
+  // return empty div when user nor posts have loaded
+  if (!userLoaded) return <div></div>
 
   return (
     <>
@@ -75,19 +93,15 @@ const Home: NextPage = () => {
         <div className='h-screen w-full border-x border-slate-400 md:max-w-3xl '>
           <div className='border-b border-slate-400 p-4'>
             <div className='flex justify-between'>
-              {!!user.isSignedIn && <CreatePostWizard />}
+              {!!isSignedIn && <CreatePostWizard />}
 
               <div className='grow text-sm text-gray-500'>
-                {!user.isSignedIn && <SignInButton />}
+                {!isSignedIn && <SignInButton />}
 
-                {!!user.isSignedIn && <SignOutButton />}
+                {isSignedIn && <SignOutButton />}
               </div>
             </div>
-          </div>
-          <div className='flex flex-col space-y-2'>
-            {data?.map(fullPost => (
-              <PostView {...fullPost} key={fullPost.post.id} />
-            ))}
+            <Feed />
           </div>
         </div>
       </main>
