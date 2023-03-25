@@ -1,7 +1,7 @@
 import { type NextPage } from 'next'
 import Head from 'next/head'
 
-const ProfilePage: NextPage = () => {
+const SinglePostPage: NextPage = () => {
   return (
     <>
       <Head>
@@ -18,4 +18,4 @@ const ProfilePage: NextPage = () => {
   )
 }
 
-export default ProfilePage
+export default SinglePostPage

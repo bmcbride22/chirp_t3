@@ -97,14 +97,14 @@ const PostView = (props: PostWithUser) => {
           <Link href={`/@${author.username}`}>
             <span>{`@${author.username}`}</span>
           </Link>
-          <Link href={`/${post.id}`}>
+          <Link href={`/post/${post.id}`}>
             <span className='px-2'> · </span>
             <span className='text-gray-600'>
               {dayjs(post.createdAt).fromNow()}
             </span>
           </Link>
         </div>
-        <Link href={`/${post.id}`}>
+        <Link href={`/post/${post.id}`}>
           <span className='text-2xl'>{post.content}</span>
         </Link>
       </div>
