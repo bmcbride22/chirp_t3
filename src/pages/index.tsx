@@ -12,6 +12,7 @@ import { LoadingPage, LoadingSpinner } from '~/components/LoadingSpinner'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { ClientRequest } from 'http'
+import { PageLayout } from '~/components/PageLayout'
 
 // Keep things in one file until you are sure you need them elsewhere
 
@@ -137,23 +138,18 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <PageLayout>
+        <div className='flex justify-between border-b border-slate-400'>
+          {!!isSignedIn && <CreatePostWizard />}
 
-      <main className='flex justify-center'>
-        <div className='h-screen w-full border-x border-slate-400 md:max-w-3xl '>
-          <div className='border-b border-slate-400'>
-            <div className='flex justify-between border-b border-slate-400'>
-              {!!isSignedIn && <CreatePostWizard />}
+          <div className='grow text-sm text-gray-500'>
+            {!isSignedIn && <SignInButton />}
 
-              <div className='grow text-sm text-gray-500'>
-                {!isSignedIn && <SignInButton />}
-
-                {isSignedIn && <SignOutButton />}
-              </div>
-            </div>
-            <Feed />
+            {isSignedIn && <SignOutButton />}
           </div>
         </div>
-      </main>
+        <Feed />
+      </PageLayout>
     </>
   )
 }
