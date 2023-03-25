@@ -35,7 +35,7 @@ const CreatePostWizard = () => {
   if (!user) return null
 
   return (
-    <div className='mb-4 flex w-full gap-3 border-b border-slate-400'>
+    <div className='mb-4 flex w-full gap-3  p-4'>
       <Image
         className='h-16 w-16 rounded-full'
         src={user.profileImageUrl}
@@ -132,8 +132,8 @@ const Home: NextPage = () => {
       </Head>
       <main className='flex justify-center'>
         <div className='h-screen w-full border-x border-slate-400 md:max-w-3xl '>
-          <div className='border-b border-slate-400 p-4'>
-            <div className='flex justify-between'>
+          <div className='border-b border-slate-400'>
+            <div className='flex justify-between border-b border-slate-400'>
               {!!isSignedIn && <CreatePostWizard />}
 
               <div className='grow text-sm text-gray-500'>
